@@ -1,0 +1,1 @@
+let firstcard = math.floor(Math.random() * 11) + 2
