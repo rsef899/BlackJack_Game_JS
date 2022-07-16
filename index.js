@@ -10,6 +10,16 @@ let messageEl = document.getElementById("message-el")
 const input = document.getElementById('bet-amount')
 let player = {
     bet: 0,
+    name: "Robert",
+
+    //pbject method, can be called from plaeyr object
+    playerEnding: function(){
+        document.getElementById("finalMessage").textContent = "You won " + player.bet + " chips"
+    },
+
+    playerEndingRemove: function(){
+        document.getElementById("finalMessage").textContent = ""
+    },
 }
 
 //check if the user needs to make a bet
@@ -74,7 +84,7 @@ function addCard(){
 
 
 function playGame(){
-
+    player.playerEndingRemove()
     document.getElementById("bet-el").textContent = "Bet Amount = " + player.bet
     document.getElementById("result-el").style.visibility = "visible"
     document.getElementById("result-el").textContent = ""
@@ -83,6 +93,7 @@ function playGame(){
         console.log("Blackjacked")
         hasBlackJacked = true
         document.getElementById("result-el").textContent = "21! You Blackjacked!, play again"
+        player.playerEnding()
         isAlive = false
         player.bet = 0;
         document.getElementById("startButton").style.visibility = "hidden"
@@ -117,6 +128,7 @@ function playGame(){
 
 //only for the startign of the game
 function startGame(){
+    player.playerEndingRemove()
     firstCard = getRandomCard();
     lastCard = getRandomCard();
     cards.push(firstCard)
