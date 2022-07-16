@@ -5,8 +5,40 @@ let hasBlackJacked = false
 let isAlive = true
 //array 
 let cards =[];
-
 let messageEl = document.getElementById("message-el")
+//creating the dom for the text box
+const input = document.getElementById('bet-amount')
+let player = {
+    bet: 0,
+}
+
+//check if the user needs to make a bet
+checkbet()
+function checkbet(){
+    document.getElementById("startButton").style.visibility = "hidden"
+    if (player.bet == 0){
+        makeBet()
+    }
+}
+
+//check for teh users enter
+function makeBet(){
+    document.getElementById("bet-amount").style.visibility = "visible"
+    //listenign for an evnet on the input dom
+    input.addEventListener('keyup', (enterPressed) => {
+    //listenign for the enter button
+    if(enterPressed.keyCode === 13){
+        player.bet = input.value
+        document.getElementById("bet-el").textContent = "Bet Amount: " + player.bet
+        console.log(player.bet)
+        document.getElementById("startButton").style.visibility = "visible"
+        document.getElementById("bet-amount").style.visibility = "hidden"
+        
+    }
+})
+}
+
+
 
 //--------selecting the sum element
 //let sumEl = document.getElementById("sum-el")
@@ -14,6 +46,7 @@ let messageEl = document.getElementById("message-el")
 let sumEl = document.querySelector("#sum-el")
 let cardsEl = document.getElementById("cards-el")
 document.getElementById("newCardButton").style.visibility = "hidden"
+document.getElementById("result-el").style.visibility = "hidden"
 
 /**
  * getting a random number for the cards
@@ -31,6 +64,7 @@ function getRandomCard(){
     }
 }
 
+//add card to the cards array
 function addCard(){
     lastCard = getRandomCard()
     cards.push(lastCard)
@@ -40,13 +74,19 @@ function addCard(){
 
 
 function playGame(){
+
+    document.getElementById("bet-el").textContent = "Bet Amount = " + player.bet
+    document.getElementById("result-el").style.visibility = "visible"
     document.getElementById("result-el").textContent = ""
     cardsEl.innerText += " " + lastCard
     if (sum === 21){
         console.log("Blackjacked")
         hasBlackJacked = true
-        document.getElementById("result-el").textContent = " You Blackjacked!, play again"
+        document.getElementById("result-el").textContent = "21! You Blackjacked!, play again"
         isAlive = false
+        player.bet = 0;
+        document.getElementById("startButton").style.visibility = "hidden"
+        checkbet()
     }
     else if (sum < 21){
         console.log("Next Hand")
@@ -56,8 +96,11 @@ function playGame(){
     else{
         console.log("Busted")
         sumEl.textContent = "Sum: " + sum 
-        document.getElementById("result-el").textContent = "You Busted Play A new game"
+        document.getElementById("result-el").textContent = "you got " + sum + " You Busted Play A new game"
         isAlive = false
+        player.bet = 0;
+        document.getElementById("startButton").style.visibility = "hidden"
+        checkbet()
     }
     if (!isAlive){
         cards = []
@@ -71,7 +114,8 @@ function playGame(){
     
     
 }
-//only used when the start game button is clocked
+
+//only for the startign of the game
 function startGame(){
     firstCard = getRandomCard();
     lastCard = getRandomCard();
@@ -85,6 +129,6 @@ function startGame(){
     document.getElementById("startButton").style.visibility = "hidden"
     document.getElementById("startButton").style.bottom = "1000px"
     document.getElementById("newCardButton").style.visibility = "visible"
-    document.getElementById("newCardButton").style.top = "6px"
+    document.getElementById("newCardButton").style.top = "5px"
    
 }
